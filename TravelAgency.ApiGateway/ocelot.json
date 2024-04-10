@@ -1,0 +1,32 @@
+﻿{
+  "Routes": [
+    //UserService Web API
+    {
+      "UpstreamPathTemplate": "/api/notificationTypes",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "travelAgency.userService.webapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/notificationTypes"
+    },
+    {
+      "UpstreamPathTemplate": "/api/notificationTypes/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "travelAgency.userService.webapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/notificationTypes/{id}"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:800"
+  }
+}

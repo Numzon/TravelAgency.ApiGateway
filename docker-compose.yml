@@ -1,0 +1,44 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+    travelAgency.userService.db:
+        container_name: travelAgency.userService.sqlServer
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        restart: always
+        environment:
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: "ergo.1234"
+        ports:
+            - 8002:1433
+        volumes:
+            - sqlserver_data_container:/var/opt/mssql
+        networks: 
+           - backend
+
+    travelAgency.userService.webapi:
+        image: ${DOCKER_REGISTRY-}travelagencyuserserviceapi
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - AWS_ACCESS_KEY_ID={Access_Key}
+            - AWS_SECRET_ACCESS_KEY={Secret_Access_Key}
+            - AWS_DEFAULT_REGION=eu-north-1
+        networks: 
+           - backend
+
+    travelagency.apigateway:
+        container_name: "api-gateway"
+        image: ${DOCKER_REGISTRY-}travelagencyapigateway
+        build:
+          context: .
+          dockerfile: TravelAgency.ApiGateway/Dockerfile
+        ports:
+            - 8001:80
+        networks:
+            - backend
+
+    
+volumes:
+   sqlserver_data_container:
